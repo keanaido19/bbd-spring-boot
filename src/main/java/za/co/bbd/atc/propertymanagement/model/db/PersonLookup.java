@@ -2,7 +2,6 @@ package za.co.bbd.atc.propertymanagement.model.db;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -83,5 +82,13 @@ public class PersonLookup {
 
     public void setPhonesLookup(Set<PhoneLookup> phonesLookup) {
         this.phonesLookup = phonesLookup;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

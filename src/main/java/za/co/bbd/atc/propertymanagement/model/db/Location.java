@@ -28,7 +28,7 @@ public class Location {
     private String country;
 
     @Column(name = "GeoLocation")
-    private Object geoLocation;
+    private String geoLocation;
 
     @OneToMany(mappedBy = "location")
     private Set<PersonLookup> peopleLookup;
@@ -41,7 +41,7 @@ public class Location {
             String province,
             String zip,
             String country,
-            Object geoLocation
+            String geoLocation
     ) {
         this.street = street;
         this.city = city;
@@ -109,11 +109,11 @@ public class Location {
         this.country = country;
     }
 
-    public Object getGeoLocation() {
+    public String getGeoLocation() {
         return geoLocation;
     }
 
-    public void setGeoLocation(Object geoLocation) {
+    public void setGeoLocation(String geoLocation) {
         this.geoLocation = geoLocation;
     }
 }
