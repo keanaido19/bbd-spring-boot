@@ -2,31 +2,36 @@ package za.co.bbd.atc.propertymanagement.model.db;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "Location")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "LocationID")
+    @Column(name = "LocationID", nullable = false)
     private Integer id;
 
-    @Column(name = "Street")
+    @Column(name = "Street", nullable = false)
     private String street;
 
-    @Column(name = "City")
+    @Column(name = "City", nullable = false)
     private String city;
 
-    @Column(name = "Province")
+    @Column(name = "Province", nullable = false)
     private String province;
 
-    @Column(name = "Zip")
+    @Column(name = "Zip", nullable = false)
     private String zip;
 
-    @Column(name = "Country")
+    @Column(name = "Country", nullable = false)
     private String country;
 
     @Column(name = "GeoLocation")
     private Object geoLocation;
+
+    @OneToMany(mappedBy = "location")
+    private Set<PersonLookup> peopleLookup;
 
     protected Location() {}
 

@@ -30,6 +30,14 @@ public class PersonLookup {
     )
     private Set<PhoneLookup> phonesLookup;
 
+    @ManyToOne
+    @JoinTable(
+            name = "PersonLocation",
+            joinColumns = @JoinColumn(name = "PersonID", unique = true, nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "LocationID", nullable = false)
+    )
+    private Location location;
+
     protected PersonLookup() {}
 
     public PersonLookup(String firstName, String lastName) {
