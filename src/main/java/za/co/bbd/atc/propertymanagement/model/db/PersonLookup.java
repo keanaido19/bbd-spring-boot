@@ -7,14 +7,17 @@ import jakarta.persistence.*;
 public class PersonLookup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PersonID")
+    @Column(name = "PersonID", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "FirstName")
+    @Column(name = "FirstName", nullable = false)
     private String firstName;
 
-    @Column(name = "LastName")
+    @Column(name = "LastName", nullable = false)
     private String lastName;
+
+    @OneToOne(mappedBy = "personLookup", cascade = CascadeType.ALL)
+    private EmailAddress emailAddress;
 
     protected PersonLookup() {}
 
@@ -45,5 +48,13 @@ public class PersonLookup {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public EmailAddress getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(EmailAddress emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }
