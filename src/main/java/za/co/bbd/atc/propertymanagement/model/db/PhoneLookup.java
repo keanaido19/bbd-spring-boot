@@ -2,6 +2,8 @@ package za.co.bbd.atc.propertymanagement.model.db;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "PhoneLookup")
 public class PhoneLookup {
@@ -15,6 +17,9 @@ public class PhoneLookup {
 
     @Column(name = "Number")
     private String number;
+
+    @ManyToMany(mappedBy = "phonesLookup")
+    private Set<PersonLookup> peopleLookup;
 
     protected PhoneLookup() {}
 

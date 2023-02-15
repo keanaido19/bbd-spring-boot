@@ -2,6 +2,9 @@ package za.co.bbd.atc.propertymanagement.model.db;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+import java.util.Set;
+
 @Entity
 @Table(name = "PersonLookup")
 public class PersonLookup {
@@ -16,8 +19,16 @@ public class PersonLookup {
     @Column(name = "LastName", nullable = false)
     private String lastName;
 
-    @OneToOne(mappedBy = "personLookup", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "personLookup")
     private EmailAddress emailAddress;
+
+    @ManyToMany
+    @JoinTable(
+            name = "PersonPhone",
+            joinColumns = @JoinColumn(name = "PersonID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "PhoneID", nullable = false)
+    )
+    private Set<PhoneLookup> phonesLookup;
 
     protected PersonLookup() {}
 
@@ -56,5 +67,13 @@ public class PersonLookup {
 
     public void setEmailAddress(EmailAddress emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public Set<PhoneLookup> getPhonesLookup() {
+        return phonesLookup;
+    }
+
+    public void setPhonesLookup(Set<PhoneLookup> phonesLookup) {
+        this.phonesLookup = phonesLookup;
     }
 }
