@@ -8,7 +8,7 @@ public class PersonLookup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PersonID")
-    private Long id;
+    private Integer id;
 
     @Column(name = "FirstName")
     private String firstName;
@@ -23,7 +23,7 @@ public class PersonLookup {
         this.lastName = lastName;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -33,5 +33,17 @@ public class PersonLookup {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

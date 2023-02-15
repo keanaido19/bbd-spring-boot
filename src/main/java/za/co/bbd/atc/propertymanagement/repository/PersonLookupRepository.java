@@ -3,4 +3,4 @@ package za.co.bbd.atc.propertymanagement.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import za.co.bbd.atc.propertymanagement.model.db.PersonLookup;
 
-public interface PersonLookupRepository extends JpaRepository<PersonLookup, Long> {}
+public interface PersonLookupRepository extends JpaRepository<PersonLookup, Integer> {}
