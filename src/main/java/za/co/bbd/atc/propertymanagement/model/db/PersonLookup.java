@@ -8,9 +8,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PersonLookup")
-public class PersonLookup {
+public class PersonLookup implements DbModel{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PersonID", unique = true, nullable = false)
     private Integer id;
 
@@ -44,6 +44,13 @@ public class PersonLookup {
     public PersonLookup(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public PersonLookup(String firstName, String lastName, String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = new EmailAddress(emailAddress);
+        this.emailAddress.setPersonLookup(this);
     }
 
     public Integer getId() {

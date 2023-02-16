@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "EmailAddress")
 public class EmailAddress implements DbModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EmailID", unique = true, nullable = false)
     private Integer id;
 

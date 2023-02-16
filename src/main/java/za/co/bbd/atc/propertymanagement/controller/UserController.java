@@ -1,63 +1,91 @@
 package za.co.bbd.atc.propertymanagement.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import za.co.bbd.atc.propertymanagement.model.dto.User;
-import za.co.bbd.atc.propertymanagement.service.EmailAddressService;
+import za.co.bbd.atc.propertymanagement.model.dto.UserCreationDTO;
+import za.co.bbd.atc.propertymanagement.model.dto.UserDTO;
+import za.co.bbd.atc.propertymanagement.service.PersonLookupService;
 import za.co.bbd.atc.propertymanagement.service.UserService;
+import za.co.bbd.atc.propertymanagement.service.user.UserServiceImpl;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/api/v1/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final EmailAddressService emailAddressService;
-
-    public UserController(UserService userService, EmailAddressService emailAddressService) {
-        this.userService = userService;
-        this.emailAddressService = emailAddressService;
-    }
-
-    @GetMapping(
-            value = "/user/{email}",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public User getUser(@PathVariable String email) {
-        return emailAddressService.get(email)
-                .map(e -> new User(e.getPersonLookup()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
+    private final UserServiceImpl us;
+    private final PersonLookupService personLookupService;
 
     @PostMapping(
-            value = "/register",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> register(
-            @RequestParam("First Name") String firstName,
-            @RequestParam("Last Name") String lastName,
-            @RequestParam("Email Address") String email
-    ) {
-//        register a user...
-        return new ResponseEntity<>(Map.of("message", "User has been registered"), HttpStatus.CREATED);
+    public ResponseEntity<?> registerUser(@RequestBody UserCreationDTO userCreationDTO) {
+        try {
+            personLookupService.save(userCreationDTO);
+            return new ResponseEntity<>(Map.of("message", "User has been registered"), HttpStatus.CREATED);
+        } catch (DataAccessException e) {
+            return new ResponseEntity<>(Map.of("StackTrace", e.getCause().getMessage(), "message", e.getMessage()), HttpStatus.FORBIDDEN);
+        }
+    }
+
+//    @GetMapping(
+//            value = "/",
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    public List<UserDTO> getUser() {
+//        return personLookupService.getAll().stream().map(UserDTO::new).collect(Collectors.toList());
+//    }
+
+    @GetMapping(
+            value = "/",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<UserDTO>> getUser() {
+        List<UserDTO> users = us.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+//    @GetMapping(
+//            value = "/{id}",
+//            produces = MediaType.APPLICATION_JSON_VALUE
+//    )
+//    public UserDTO getUser(@PathVariable Integer id) {
+//        return personLookupService.get(id)
+//                .map(UserDTO::new)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//    }
+
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+
     }
 
     @PatchMapping(
-            value = "/user/{email}",
+            value = "/{email}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> updateEmail(
             @PathVariable String email,
-            @RequestParam("Email Address") String emailRequestParam
+            @RequestParam("emailAddress") String emailRequestParam
     ) {
         userService.UpdateEmail(email, emailRequestParam);
         return new ResponseEntity<>(Map.of("message", "User Email Address has been updated"), HttpStatus.OK);
     }
 
     @PostMapping(
-            value = "/user/{email}",
+            value = "/{email}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> addPhoneNumber(
