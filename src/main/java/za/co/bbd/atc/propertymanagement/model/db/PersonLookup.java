@@ -1,5 +1,6 @@
 package za.co.bbd.atc.propertymanagement.model.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -18,7 +19,7 @@ public class PersonLookup {
     @Column(name = "LastName", nullable = false)
     private String lastName;
 
-    @OneToOne(mappedBy = "personLookup")
+    @OneToOne(mappedBy = "personLookup", cascade = CascadeType.ALL)
     private EmailAddress emailAddress;
 
     @ManyToMany
@@ -84,6 +85,17 @@ public class PersonLookup {
         this.phonesLookup = phonesLookup;
     }
 
+    public void addPhoneLookup(PhoneLookup phoneLookup) {
+        this.phonesLookup.add(phoneLookup);
+        phoneLookup.getPeopleLookup().add(this);
+    }
+
+    public void removePhoneLookup(PhoneLookup phoneLookup) {
+        this.phonesLookup.remove(phoneLookup);
+        phoneLookup.getPeopleLookup().remove(this);
+    }
+
+    @JsonIgnore
     public Location getLocation() {
         return location;
     }

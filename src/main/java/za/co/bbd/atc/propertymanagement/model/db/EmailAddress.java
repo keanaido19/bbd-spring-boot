@@ -1,11 +1,16 @@
 package za.co.bbd.atc.propertymanagement.model.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EmailAddress")
 public class EmailAddress {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "EmailID", unique = true, nullable = false)
+    private Integer id;
+
     @Column(name = "EmailAddress", unique = true, nullable = false)
     private String emailAddress;
 
@@ -15,9 +20,16 @@ public class EmailAddress {
 
     protected EmailAddress() {}
 
-    public EmailAddress(String emailAddress, PersonLookup personLookup) {
+    public EmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-        this.personLookup = personLookup;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmailAddress() {
@@ -28,6 +40,7 @@ public class EmailAddress {
         this.emailAddress = emailAddress;
     }
 
+    @JsonIgnore
     public PersonLookup getPersonLookup() {
         return personLookup;
     }
