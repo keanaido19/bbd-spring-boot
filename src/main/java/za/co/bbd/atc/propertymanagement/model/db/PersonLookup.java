@@ -3,6 +3,7 @@ package za.co.bbd.atc.propertymanagement.model.db;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -69,8 +70,8 @@ public class PersonLookup {
         this.lastName = lastName;
     }
 
-    public EmailAddress getEmailAddress() {
-        return emailAddress;
+    public String getEmailAddress() {
+        return emailAddress.getEmailAddress();
     }
 
     public void setEmailAddress(EmailAddress emailAddress) {
@@ -78,6 +79,9 @@ public class PersonLookup {
     }
 
     public Set<PhoneLookup> getPhonesLookup() {
+        if (null == phonesLookup) {
+            phonesLookup = new HashSet<>();
+        }
         return phonesLookup;
     }
 

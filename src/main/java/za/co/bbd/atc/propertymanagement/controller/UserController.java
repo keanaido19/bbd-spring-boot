@@ -1,12 +1,12 @@
 package za.co.bbd.atc.propertymanagement.controller;
 
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import za.co.bbd.atc.propertymanagement.model.db.PersonLookup;
+import za.co.bbd.atc.propertymanagement.model.dto.User;
+import za.co.bbd.atc.propertymanagement.service.EmailAddressService;
 import za.co.bbd.atc.propertymanagement.service.UserService;
 
 import java.util.Map;
@@ -14,9 +14,21 @@ import java.util.Map;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final EmailAddressService emailAddressService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailAddressService emailAddressService) {
         this.userService = userService;
+        this.emailAddressService = emailAddressService;
+    }
+
+    @GetMapping(
+            value = "/user/{email}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public User getUser(@PathVariable String email) {
+        return emailAddressService.get(email)
+                .map(e -> new User(e.getPersonLookup()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(
@@ -30,18 +42,6 @@ public class UserController {
     ) {
 //        register a user...
         return new ResponseEntity<>(Map.of("message", "User has been registered"), HttpStatus.CREATED);
-    }
-
-    @GetMapping(
-            value = "/user/{email}",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public PersonLookup getUser(@PathVariable String email) {
-        return userService
-                .getUser(email)
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-                );
     }
 
     @PatchMapping(

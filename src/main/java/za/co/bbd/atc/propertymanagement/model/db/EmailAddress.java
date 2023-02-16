@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "EmailAddress")
-public class EmailAddress {
+public class EmailAddress implements DbModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "EmailID", unique = true, nullable = false)
