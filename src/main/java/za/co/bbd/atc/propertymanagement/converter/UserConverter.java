@@ -3,12 +3,12 @@ package za.co.bbd.atc.propertymanagement.converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
-import za.co.bbd.atc.propertymanagement.dto.PhoneNumberDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.PhoneNumberDTO;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
-import za.co.bbd.atc.propertymanagement.entity.EmailAddressEntity;
-import za.co.bbd.atc.propertymanagement.entity.UserEntity;
-import za.co.bbd.atc.propertymanagement.dto.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.UserDTO;
+import za.co.bbd.atc.propertymanagement.entity.user.EmailAddressEntity;
+import za.co.bbd.atc.propertymanagement.entity.user.UserEntity;
+import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
 
 import java.util.List;
 

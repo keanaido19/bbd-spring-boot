@@ -1,4 +1,4 @@
-package za.co.bbd.atc.propertymanagement.entity;
+package za.co.bbd.atc.propertymanagement.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;

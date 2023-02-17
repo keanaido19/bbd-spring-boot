@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.bbd.atc.propertymanagement.dto.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.UserDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
 import za.co.bbd.atc.propertymanagement.service.impl.UserServiceImpl;
 
 import java.util.List;

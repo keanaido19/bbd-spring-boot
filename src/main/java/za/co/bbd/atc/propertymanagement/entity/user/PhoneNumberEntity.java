@@ -1,8 +1,7 @@
-package za.co.bbd.atc.propertymanagement.entity;
+package za.co.bbd.atc.propertymanagement.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

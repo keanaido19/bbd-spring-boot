@@ -1,10 +1,9 @@
 package za.co.bbd.atc.propertymanagement.service;
 
-import za.co.bbd.atc.propertymanagement.dto.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.UserDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     UserDTO saveUser(UserCreationDTO userCreationDTO);

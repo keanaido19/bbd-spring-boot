@@ -1,8 +1,8 @@
 package za.co.bbd.atc.propertymanagement.converter;
 
 import org.springframework.stereotype.Component;
-import za.co.bbd.atc.propertymanagement.entity.PhoneNumberEntity;
-import za.co.bbd.atc.propertymanagement.dto.PhoneNumberDTO;
+import za.co.bbd.atc.propertymanagement.entity.user.PhoneNumberEntity;
+import za.co.bbd.atc.propertymanagement.dto.user.PhoneNumberDTO;
 
 import java.util.ArrayList;
 import java.util.List;

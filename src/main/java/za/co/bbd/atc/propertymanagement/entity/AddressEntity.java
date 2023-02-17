@@ -3,6 +3,8 @@ package za.co.bbd.atc.propertymanagement.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import za.co.bbd.atc.propertymanagement.entity.property.PropertyEntity;
+import za.co.bbd.atc.propertymanagement.entity.user.UserEntity;
 
 import java.util.List;
 
@@ -36,5 +38,8 @@ public class AddressEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "addressEntity")
     private List<UserEntity> userEntityList;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "addressEntity")
+    private PropertyEntity propertyEntity;
 
 }
