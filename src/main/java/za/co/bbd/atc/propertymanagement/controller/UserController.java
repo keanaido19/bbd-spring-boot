@@ -26,8 +26,8 @@ public class UserController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
-        Optional<UserDTO> optionalUserDTO = userService.getUser(id);
-        return new ResponseEntity<>(optionalUserDTO.get(), HttpStatus.OK);
+        UserDTO userDTO = userService.getUser(id);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

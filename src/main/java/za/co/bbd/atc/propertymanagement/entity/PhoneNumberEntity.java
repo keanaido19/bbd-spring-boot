@@ -17,10 +17,10 @@ public class PhoneNumberEntity {
     @Column(name = "PhoneID", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "Code", nullable = false, length = 10)
+    @Column(name = "Code", nullable = false)
     private String countryCode;
 
-    @Column(name = "Number", nullable = false, length = 10)
+    @Column(name = "Number", nullable = false)
     private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)

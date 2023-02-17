@@ -11,6 +11,7 @@ import za.co.bbd.atc.propertymanagement.dto.UserDTO;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
 import za.co.bbd.atc.propertymanagement.entity.PhoneNumberEntity;
 import za.co.bbd.atc.propertymanagement.entity.UserEntity;
+import za.co.bbd.atc.propertymanagement.exception.UserNotFoundException;
 import za.co.bbd.atc.propertymanagement.repository.PhoneNumberRepository;
 import za.co.bbd.atc.propertymanagement.repository.UserRepository;
 import za.co.bbd.atc.propertymanagement.service.UserService;
@@ -35,15 +36,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDTO> getUser(Integer id) {
+    public UserDTO getUser(Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        return optionalUserEntity.map(userConverter::convertEntityToDTO);
+        if (optionalUserEntity.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+        return userConverter.convertEntityToDTO(optionalUserEntity.get());
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<UserDTO> users = userRepository.findAll().stream().map(userConverter::convertEntityToDTO).toList();
-        return users;
+        return userRepository.findAll().stream().map(userConverter::convertEntityToDTO).toList();
     }
 
     private void updatePhoneNumbers(UserDTO userDTO, UserEntity userEntity) {
@@ -84,7 +87,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer id) {
-        UserDTO dto = null;
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -99,14 +101,13 @@ public class UserServiceImpl implements UserService {
             updateAddress(userDTO, userEntity);
 
             userRepository.save(userEntity);
-            dto = userConverter.convertEntityToDTO(userEntity);
+            return userConverter.convertEntityToDTO(userEntity);
         }
-        return dto;
+        throw new UserNotFoundException(id);
     }
 
     @Override
     public UserDTO updateNames(UserDTO userDTO, Integer id) {
-        UserDTO dto = null;
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -115,14 +116,13 @@ public class UserServiceImpl implements UserService {
             userEntity.setLastName(userDTO.getLastName());
 
             userRepository.save(userEntity);
-            dto = userConverter.convertEntityToDTO(userEntity);
+            return userConverter.convertEntityToDTO(userEntity);
         }
-        return dto;
+        throw new UserNotFoundException(id);
     }
 
     @Override
     public UserDTO updateEmailAddress(UserDTO userDTO, Integer id) {
-        UserDTO dto = null;
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -130,14 +130,13 @@ public class UserServiceImpl implements UserService {
             userEntity.getEmailAddressEntity().setEmailAddress(userDTO.getEmailAddress());
 
             userRepository.save(userEntity);
-            dto = userConverter.convertEntityToDTO(userEntity);
+            return userConverter.convertEntityToDTO(userEntity);
         }
-        return dto;
+        throw new UserNotFoundException(id);
     }
 
     @Override
     public UserDTO updatePhoneNumbers(UserDTO userDTO, Integer id) {
-        UserDTO dto = null;
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -145,14 +144,13 @@ public class UserServiceImpl implements UserService {
             updatePhoneNumbers(userDTO, userEntity);
 
             userRepository.save(userEntity);
-            dto = userConverter.convertEntityToDTO(userEntity);
+            return userConverter.convertEntityToDTO(userEntity);
         }
-        return dto;
+        throw new UserNotFoundException(id);
     }
 
     @Override
     public UserDTO updateAddress(UserDTO userDTO, Integer id) {
-        UserDTO dto = null;
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -160,8 +158,8 @@ public class UserServiceImpl implements UserService {
             updateAddress(userDTO, userEntity);
 
             userRepository.save(userEntity);
-            dto = userConverter.convertEntityToDTO(userEntity);
+            return userConverter.convertEntityToDTO(userEntity);
         }
-        return dto;
+        throw new UserNotFoundException(id);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserService {
     UserDTO saveUser(UserCreationDTO userCreationDTO);
 
-    Optional<UserDTO> getUser(Integer id);
+    UserDTO getUser(Integer id);
 
     List<UserDTO> getAllUsers();
 

@@ -1,6 +1,7 @@
 package za.co.bbd.atc.propertymanagement.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,18 +10,19 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class UserCreationDTO {
-    @JsonProperty(required = true)
+    @NotNull
+    @NotBlank
     private String firstName;
 
-    @JsonProperty(required = true)
+    @NotNull
+    @NotBlank
     private String lastName;
 
-    @JsonProperty(required = true)
+    @NotNull
+    @NotBlank
     private String emailAddress;
 
-    @JsonProperty(required = false)
     private List<PhoneNumberDTO> phoneNumberList;
 
-    @JsonProperty(required = false)
     private AddressDTO address;
 }
