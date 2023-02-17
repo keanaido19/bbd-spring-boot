@@ -22,7 +22,7 @@ public class CustomExceptionHandler {
         List<ErrorModel> errorModelList = fieldErrors.stream()
                 .map(fe -> {
                     ErrorModel errorModel = new ErrorModel();
-                    errorModel.setCode(fe.getCode());
+                    errorModel.setCode(fe.getField());
                     errorModel.setMessage(fe.getDefaultMessage());
                     return errorModel;
                 }).toList();

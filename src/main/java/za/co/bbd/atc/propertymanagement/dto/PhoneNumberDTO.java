@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PhoneNumberDTO {
-    @NotNull(message = "countryCode field must not be null")
-    @NotBlank(message = "countryCode field must not be blank")
-    @JsonProperty(required = true)
+    @NotNull
+    @NotBlank
     private String countryCode;
 
-    @NotNull(message = "phoneNumber field must not be null")
-    @NotBlank(message = "phoneNumber field must not be blank")
-    @JsonProperty(required = true)
+    @NotNull
+    @NotBlank
     private String phoneNumber;
 }
