@@ -1,7 +1,7 @@
 package za.co.bbd.atc.propertymanagement.entity.property;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "Apartments")
 @NoArgsConstructor
-@Data
 public class ApartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,15 +18,43 @@ public class ApartmentEntity {
     @Column(name = "Name", unique = true, nullable = false)
     private String Name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PropertyID", unique = true, nullable = false)
     private PropertyEntity propertyEntity;
 
     @OneToMany(mappedBy = "apartmentEntity")
-    @JoinTable(
-            name = "ApartmentLots",
-            joinColumns = @JoinColumn(name = "ApartmentID", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "LotID", unique = true, nullable = false)
-    )
     List<LotEntity> apartmentLots;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    @JsonIgnore
+    public PropertyEntity getPropertyEntity() {
+        return propertyEntity;
+    }
+
+    public void setPropertyEntity(PropertyEntity propertyEntity) {
+        this.propertyEntity = propertyEntity;
+    }
+
+    public List<LotEntity> getApartmentLots() {
+        return apartmentLots;
+    }
+
+    public void setApartmentLots(List<LotEntity> apartmentLots) {
+        this.apartmentLots = apartmentLots;
+    }
 }

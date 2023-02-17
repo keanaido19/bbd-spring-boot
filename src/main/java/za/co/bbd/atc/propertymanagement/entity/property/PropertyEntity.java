@@ -15,7 +15,7 @@ public class PropertyEntity {
     @Column(name = "PropertyID", unique = true, nullable = false)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "LocationID", unique = true, nullable = false)
     private AddressEntity addressEntity;
 

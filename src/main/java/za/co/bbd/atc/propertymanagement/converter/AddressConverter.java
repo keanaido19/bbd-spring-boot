@@ -2,10 +2,8 @@ package za.co.bbd.atc.propertymanagement.converter;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
 import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
-
-import java.lang.reflect.Field;
+import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
 
 @Component
 public class AddressConverter {

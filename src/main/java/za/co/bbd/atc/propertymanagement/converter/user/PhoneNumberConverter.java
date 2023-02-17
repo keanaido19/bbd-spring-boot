@@ -1,4 +1,4 @@
-package za.co.bbd.atc.propertymanagement.converter;
+package za.co.bbd.atc.propertymanagement.converter.user;
 
 import org.springframework.stereotype.Component;
 import za.co.bbd.atc.propertymanagement.entity.user.PhoneNumberEntity;

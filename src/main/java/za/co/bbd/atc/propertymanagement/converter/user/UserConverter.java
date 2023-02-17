@@ -1,7 +1,8 @@
-package za.co.bbd.atc.propertymanagement.converter;
+package za.co.bbd.atc.propertymanagement.converter.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import za.co.bbd.atc.propertymanagement.converter.AddressConverter;
 import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
 import za.co.bbd.atc.propertymanagement.dto.user.PhoneNumberDTO;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
