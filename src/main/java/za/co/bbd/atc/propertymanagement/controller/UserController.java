@@ -1,5 +1,6 @@
 package za.co.bbd.atc.propertymanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import za.co.bbd.atc.propertymanagement.dto.UserDTO;
 import za.co.bbd.atc.propertymanagement.service.impl.UserServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> saveUser(@RequestBody UserCreationDTO userCreationDTO) {
+    public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserCreationDTO userCreationDTO) {
         UserDTO userDTO = userService.saveUser(userCreationDTO);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -41,7 +41,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updateUser(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateNames(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updateNames(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updateNames(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -61,7 +61,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateEmailAddress(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updateEmailAddress(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updateEmailAddress(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -71,7 +71,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updatePhoneNumbers(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updatePhoneNumbers(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updatePhoneNumbers(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -81,7 +81,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateAddress(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updateAddress(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updateAddress(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
