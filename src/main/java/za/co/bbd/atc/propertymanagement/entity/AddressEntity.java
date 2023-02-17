@@ -34,7 +34,7 @@ public class AddressEntity {
     @Column(name = "GeoLocation")
     private String geoLocation;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "addressEntity")
     private List<UserEntity> userEntityList;
 
 }

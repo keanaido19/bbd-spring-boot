@@ -1,4 +1,4 @@
-package za.co.bbd.atc.propertymanagement.model.dto;
+package za.co.bbd.atc.propertymanagement.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

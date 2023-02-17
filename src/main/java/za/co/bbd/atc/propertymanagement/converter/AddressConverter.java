@@ -1,11 +1,33 @@
 package za.co.bbd.atc.propertymanagement.converter;
 
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
-import za.co.bbd.atc.propertymanagement.model.dto.AddressDTO;
+import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
+
+import java.lang.reflect.Field;
 
 @Component
 public class AddressConverter {
+
+    @SneakyThrows
+    public AddressEntity convertDTOtoEntity(AddressDTO addressDTO) {
+
+        if(null == addressDTO.getStreet() ||
+        null == addressDTO.getCity() ||
+        null == addressDTO.getProvince() ||
+        null == addressDTO.getZip() ||
+        null == addressDTO.getCountry()) return null;
+
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setStreet(addressDTO.getStreet());
+        addressEntity.setCity(addressDTO.getCity());
+        addressEntity.setProvince(addressDTO.getProvince());
+        addressEntity.setZip(addressDTO.getZip());
+        addressEntity.setCountry(addressDTO.getCountry());
+        return addressEntity;
+    }
+
     public AddressDTO convertEntityToDTO(AddressEntity addressEntity) {
         AddressDTO dto = new AddressDTO();
 

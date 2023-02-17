@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,17 +25,26 @@ public class UserEntity {
     @Column(name = "LastName", nullable = false, length = 20)
     private String lastName;
 
-    @OneToOne(mappedBy = "userEntity")
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
     private EmailAddressEntity emailAddressEntity;
 
-    @ManyToMany(mappedBy = "userEntityList")
+    @ManyToMany(mappedBy = "userEntityList", cascade = CascadeType.ALL)
     private List<PhoneNumberEntity> phoneNumberEntityList;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(
             name = "PersonLocation",
             joinColumns = @JoinColumn(name = "PersonID", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "LocationID", nullable = false)
     )
     private AddressEntity addressEntity;
+
+    public void removePhoneNumbers() {
+        if (null != getPhoneNumberEntityList()) {
+            for (PhoneNumberEntity phoneNumberEntity : getPhoneNumberEntityList()) {
+                phoneNumberEntity.getUserEntityList().remove(this);
+            }
+            setPhoneNumberEntityList(new ArrayList<>());
+        }
+    }
 }
