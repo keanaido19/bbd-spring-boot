@@ -36,9 +36,53 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
         userDTO = userService.updateUser(userDTO, id);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(
+            value = "/update-names/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UserDTO> updateNames(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+        userDTO = userService.updateNames(userDTO, id);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(
+            value = "/update-email-address/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UserDTO> updateEmailAddress(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+        userDTO = userService.updateEmailAddress(userDTO, id);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(
+            value = "/update-phone-numbers/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UserDTO> updatePhoneNumbers(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+        userDTO = userService.updatePhoneNumbers(userDTO, id);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    }
+
+    @PatchMapping(
+            value = "/update-address/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UserDTO> updateAddress(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+        userDTO = userService.updateAddress(userDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 }

@@ -7,11 +7,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    public UserDTO saveUser(UserCreationDTO userCreationDTO);
+    UserDTO saveUser(UserCreationDTO userCreationDTO);
 
-    public Optional<UserDTO> getUser(Integer id);
+    Optional<UserDTO> getUser(Integer id);
 
-    public List<UserDTO> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    public UserDTO updateUser(UserDTO userDTO, Integer id);
+    UserDTO updateUser(UserDTO userDTO, Integer id);
+
+    UserDTO updateNames(UserDTO userDTO, Integer id);
+
+    UserDTO updateEmailAddress(UserDTO userDTO, Integer id);
+
+    UserDTO updatePhoneNumbers(UserDTO userDTO, Integer id);
+
+    UserDTO updateAddress(UserDTO userDTO, Integer id);
 }

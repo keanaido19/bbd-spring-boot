@@ -9,7 +9,6 @@ import za.co.bbd.atc.propertymanagement.dto.PhoneNumberDTO;
 import za.co.bbd.atc.propertymanagement.dto.UserCreationDTO;
 import za.co.bbd.atc.propertymanagement.dto.UserDTO;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
-import za.co.bbd.atc.propertymanagement.entity.EmailAddressEntity;
 import za.co.bbd.atc.propertymanagement.entity.PhoneNumberEntity;
 import za.co.bbd.atc.propertymanagement.entity.UserEntity;
 import za.co.bbd.atc.propertymanagement.repository.PhoneNumberRepository;
@@ -47,6 +46,42 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    private void updatePhoneNumbers(UserDTO userDTO, UserEntity userEntity) {
+        List<PhoneNumberEntity> phoneNumberEntityList = new ArrayList<>();
+        List<PhoneNumberDTO> phoneNumberDTOList = userDTO.getPhoneNumberList();
+
+        userEntity.removePhoneNumbers();
+
+        if (null != phoneNumberDTOList) {
+            for (PhoneNumberDTO phoneNumberDTO : phoneNumberDTOList) {
+                PhoneNumberEntity phoneNumberEntity = phoneNumberRepository
+                        .findPhoneNumberEntityByCountryCodeAndPhoneNumber(
+                                phoneNumberDTO.getCountryCode(), phoneNumberDTO.getPhoneNumber()
+                        );
+                if (null == phoneNumberEntity)
+                    phoneNumberEntity = phoneNumberConverter.convertDTOtoEntity(phoneNumberDTO);
+                phoneNumberEntity.getUserEntityList().add(userEntity);
+                phoneNumberEntityList.add(phoneNumberEntity);
+            }
+        }
+        userEntity.setPhoneNumberEntityList(phoneNumberEntityList);
+    }
+
+    private void updateAddress(UserDTO userDTO, UserEntity userEntity) {
+        AddressEntity addressEntity = new AddressEntity();
+        AddressDTO addressDTO = userDTO.getAddress();
+
+        if (null == addressDTO) userEntity.setAddressEntity(null);
+        else {
+            addressEntity.setStreet(addressDTO.getStreet());
+            addressEntity.setCity(addressDTO.getCity());
+            addressEntity.setProvince(addressDTO.getProvince());
+            addressEntity.setZip(addressDTO.getZip());
+            addressEntity.setCountry(addressDTO.getCountry());
+            userEntity.setAddressEntity(addressEntity);
+        }
+    }
+
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer id) {
         UserDTO dto = null;
@@ -59,37 +94,70 @@ public class UserServiceImpl implements UserService {
 
             userEntity.getEmailAddressEntity().setEmailAddress(userDTO.getEmailAddress());
 
-            List<PhoneNumberEntity> phoneNumberEntityList = new ArrayList<>();
-            List<PhoneNumberDTO> phoneNumberDTOList = userDTO.getPhoneNumberList();
+            updatePhoneNumbers(userDTO, userEntity);
 
-            userEntity.removePhoneNumbers();
+            updateAddress(userDTO, userEntity);
 
-            if (null != phoneNumberDTOList) {
-                for (PhoneNumberDTO phoneNumberDTO : phoneNumberDTOList) {
-                    PhoneNumberEntity phoneNumberEntity = phoneNumberRepository
-                            .findPhoneNumberEntityByCountryCodeAndPhoneNumber(
-                                    phoneNumberDTO.getCountryCode(), phoneNumberDTO.getPhoneNumber()
-                            );
-                    if (null == phoneNumberEntity)
-                        phoneNumberEntity = phoneNumberConverter.convertDTOtoEntity(phoneNumberDTO);
-                    phoneNumberEntity.getUserEntityList().add(userEntity);
-                    phoneNumberEntityList.add(phoneNumberEntity);
-                }
-            }
-            userEntity.setPhoneNumberEntityList(phoneNumberEntityList);
+            userRepository.save(userEntity);
+            dto = userConverter.convertEntityToDTO(userEntity);
+        }
+        return dto;
+    }
 
-            AddressEntity addressEntity = new AddressEntity();
-            AddressDTO addressDTO = userDTO.getAddress();
+    @Override
+    public UserDTO updateNames(UserDTO userDTO, Integer id) {
+        UserDTO dto = null;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
 
-            if (null == addressDTO) userEntity.setAddressEntity(null);
-            else {
-                addressEntity.setStreet(addressDTO.getStreet());
-                addressEntity.setCity(addressDTO.getCity());
-                addressEntity.setProvince(addressDTO.getProvince());
-                addressEntity.setZip(addressDTO.getZip());
-                addressEntity.setCountry(addressDTO.getCountry());
-                userEntity.setAddressEntity(addressEntity);
-            }
+            userEntity.setFirstName(userDTO.getFirstName());
+            userEntity.setLastName(userDTO.getLastName());
+
+            userRepository.save(userEntity);
+            dto = userConverter.convertEntityToDTO(userEntity);
+        }
+        return dto;
+    }
+
+    @Override
+    public UserDTO updateEmailAddress(UserDTO userDTO, Integer id) {
+        UserDTO dto = null;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+
+            userEntity.getEmailAddressEntity().setEmailAddress(userDTO.getEmailAddress());
+
+            userRepository.save(userEntity);
+            dto = userConverter.convertEntityToDTO(userEntity);
+        }
+        return dto;
+    }
+
+    @Override
+    public UserDTO updatePhoneNumbers(UserDTO userDTO, Integer id) {
+        UserDTO dto = null;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+
+            updatePhoneNumbers(userDTO, userEntity);
+
+            userRepository.save(userEntity);
+            dto = userConverter.convertEntityToDTO(userEntity);
+        }
+        return dto;
+    }
+
+    @Override
+    public UserDTO updateAddress(UserDTO userDTO, Integer id) {
+        UserDTO dto = null;
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+
+            updateAddress(userDTO, userEntity);
 
             userRepository.save(userEntity);
             dto = userConverter.convertEntityToDTO(userEntity);
