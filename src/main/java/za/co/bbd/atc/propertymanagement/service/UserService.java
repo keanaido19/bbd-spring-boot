@@ -1,7 +1,7 @@
 package za.co.bbd.atc.propertymanagement.service;
 
-import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
+import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.*;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    UserDTO updateUser(UserDTO userDTO, Integer id);
+    UserDTO updateUser(UserCreationDTO userCreationDTO, Integer id);
 
-    UserDTO updateNames(UserDTO userDTO, Integer id);
+    UserDTO updateNames(NamesDTO namesDTO, Integer id);
 
-    UserDTO updateEmailAddress(UserDTO userDTO, Integer id);
+    UserDTO updateEmailAddress(EmailAddressDTO emailAddressDTO, Integer id);
 
-    UserDTO updatePhoneNumbers(UserDTO userDTO, Integer id);
+    UserDTO updateContactDetails(List<PhoneNumberDTO> contactDetails, Integer id);
 
-    UserDTO updateAddress(UserDTO userDTO, Integer id);
+    UserDTO updateAddress(AddressDTO addressDTO, Integer id);
 }

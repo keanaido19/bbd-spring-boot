@@ -29,7 +29,7 @@ public class UserConverter {
         emailAddressEntity.setUserEntity(userEntity);
         userEntity.setEmailAddressEntity(emailAddressEntity);
 
-        List<PhoneNumberDTO> phoneNumberDTOList = userCreationDTO.getPhoneNumberList();
+        List<PhoneNumberDTO> phoneNumberDTOList = userCreationDTO.getContactDetails();
         if (null != phoneNumberDTOList)
             userEntity.setPhoneNumberEntityList(phoneNumberConverter.convertDTOlistToEntityList(phoneNumberDTOList));
 
@@ -48,7 +48,7 @@ public class UserConverter {
         dto.setFirstName(userEntity.getFirstName());
         dto.setLastName(userEntity.getLastName());
         dto.setEmailAddress(userEntity.getEmailAddressEntity().getEmailAddress());
-        dto.setPhoneNumberList(phoneNumberConverter.convertEntityListToDTOlist(userEntity.getPhoneNumberEntityList()));
+        dto.setContactDetails(phoneNumberConverter.convertEntityListToDTOlist(userEntity.getPhoneNumberEntityList()));
         dto.setAddress(addressConverter.convertEntityToDTO(userEntity.getAddressEntity()));
         return dto;
     }

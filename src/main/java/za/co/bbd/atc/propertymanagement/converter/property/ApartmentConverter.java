@@ -1,6 +1,7 @@
 package za.co.bbd.atc.propertymanagement.converter.property;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import za.co.bbd.atc.propertymanagement.converter.AddressConverter;
 import za.co.bbd.atc.propertymanagement.dto.property.ApartmentDTO;
 import za.co.bbd.atc.propertymanagement.dto.property.LotDTO;
@@ -11,23 +12,22 @@ import za.co.bbd.atc.propertymanagement.entity.property.PropertyEntity;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Component
 public class ApartmentConverter {
     private final AddressConverter addressConverter;
     private final LotConverter lotConverter;
-    public ApartmentDTO convertEntityToDTO(ApartmentEntity apartmentEntity) {
+    public ApartmentDTO convertEntityToDTO(PropertyEntity propertyEntity) {
+        ApartmentEntity apartmentEntity = propertyEntity.getApartmentEntity();
         ApartmentDTO dto = new ApartmentDTO();
         dto.setApartmentID(apartmentEntity.getId());
         dto.setName(apartmentEntity.getName());
-        dto.setApartmentLots(lotConverter.convertEntityListToDTOlist(apartmentEntity.getApartmentLots()));
+        System.out.println(apartmentEntity.getLots());
+        dto.setApartmentLots(lotConverter.convertEntityListToDTOlist(apartmentEntity.getLots()));
 
-        PropertyEntity propertyEntity = apartmentEntity.getPropertyEntity();
+        propertyEntity = apartmentEntity.getPropertyEntity();
         dto.setAddress(addressConverter.convertEntityToDTO(propertyEntity.getAddressEntity()));
         dto.setPropertyID(propertyEntity.getId());
 
         return dto;
-    }
-
-    public List<ApartmentDTO> convertEntityListToDTOlist(List<ApartmentEntity> apartmentEntityList) {
-        return apartmentEntityList.stream().map(this::convertEntityToDTO).toList();
     }
 }

@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import za.co.bbd.atc.propertymanagement.converter.user.PhoneNumberConverter;
 import za.co.bbd.atc.propertymanagement.converter.user.UserConverter;
 import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
-import za.co.bbd.atc.propertymanagement.dto.user.PhoneNumberDTO;
-import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.*;
 import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
 import za.co.bbd.atc.propertymanagement.entity.user.PhoneNumberEntity;
 import za.co.bbd.atc.propertymanagement.entity.user.UserEntity;
@@ -19,6 +17,7 @@ import za.co.bbd.atc.propertymanagement.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,33 +48,26 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream().map(userConverter::convertEntityToDTO).toList();
     }
 
-    private void updatePhoneNumbers(UserDTO userDTO, UserEntity userEntity) {
-        List<PhoneNumberEntity> phoneNumberEntityList = new ArrayList<>();
-        List<PhoneNumberDTO> phoneNumberDTOList = userDTO.getPhoneNumberList();
+    private void updateContactDetails(List<PhoneNumberDTO> phoneNumbers, UserEntity userEntity) {
+        List<PhoneNumberEntity> addList = phoneNumberConverter.convertDTOlistToEntityList(phoneNumbers.stream().distinct().toList());
 
-        userEntity.removePhoneNumbers();
+        List<PhoneNumberEntity> removeList =
+                Optional.ofNullable(userEntity.getPhoneNumberEntityList()).orElse(new ArrayList<>());
 
-        if (null != phoneNumberDTOList) {
-            for (PhoneNumberDTO phoneNumberDTO : phoneNumberDTOList) {
-                PhoneNumberEntity phoneNumberEntity = phoneNumberRepository
-                        .findPhoneNumberEntityByCountryCodeAndPhoneNumber(
-                                phoneNumberDTO.getCountryCode(), phoneNumberDTO.getPhoneNumber()
-                        );
-                if (null == phoneNumberEntity)
-                    phoneNumberEntity = phoneNumberConverter.convertDTOtoEntity(phoneNumberDTO);
-                phoneNumberEntity.getUserEntityList().add(userEntity);
-                phoneNumberEntityList.add(phoneNumberEntity);
-            }
-        }
-        userEntity.setPhoneNumberEntityList(phoneNumberEntityList);
+        removeList.removeAll(addList);
+
+        addList.removeAll(Optional.ofNullable(userEntity.getPhoneNumberEntityList()).orElse(new ArrayList<>()));
+
+        userEntity.removeAllPhoneNumbers();
+
+        userEntity.removePhoneNumbers(removeList);
+        userEntity.addPhoneNumbers(addList);
     }
 
-    private void updateAddress(UserDTO userDTO, UserEntity userEntity) {
-        AddressEntity addressEntity = new AddressEntity();
-        AddressDTO addressDTO = userDTO.getAddress();
-
+    private void updateAddress(AddressDTO addressDTO, UserEntity userEntity) {
         if (null == addressDTO) userEntity.setAddressEntity(null);
         else {
+            AddressEntity addressEntity = new AddressEntity();
             addressEntity.setStreet(addressDTO.getStreet());
             addressEntity.setCity(addressDTO.getCity());
             addressEntity.setProvince(addressDTO.getProvince());
@@ -86,80 +78,81 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO, Integer id) {
+    public UserDTO updateUser(UserCreationDTO userCreationDTO, Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
 
-            userEntity.setFirstName(userDTO.getFirstName());
-            userEntity.setLastName(userDTO.getLastName());
+        if (optionalUserEntity.isEmpty()) throw new UserNotFoundException(id);
 
-            userEntity.getEmailAddressEntity().setEmailAddress(userDTO.getEmailAddress());
+        UserEntity userEntity = optionalUserEntity.get();
 
-            updatePhoneNumbers(userDTO, userEntity);
+        userEntity.setFirstName(userCreationDTO.getFirstName());
+        userEntity.setLastName(userCreationDTO.getLastName());
 
-            updateAddress(userDTO, userEntity);
+        userEntity.getEmailAddressEntity().setEmailAddress(userCreationDTO.getEmailAddress());
 
-            userRepository.save(userEntity);
-            return userConverter.convertEntityToDTO(userEntity);
-        }
-        throw new UserNotFoundException(id);
+        updateContactDetails(userCreationDTO.getContactDetails(), userEntity);
+
+        updateAddress(userCreationDTO.getAddress(), userEntity);
+
+        userRepository.save(userEntity);
+        return userConverter.convertEntityToDTO(userEntity);
     }
 
     @Override
-    public UserDTO updateNames(UserDTO userDTO, Integer id) {
+    public UserDTO updateNames(NamesDTO namesDTO, Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
 
-            userEntity.setFirstName(userDTO.getFirstName());
-            userEntity.setLastName(userDTO.getLastName());
+        if (optionalUserEntity.isEmpty()) throw new UserNotFoundException(id);
 
-            userRepository.save(userEntity);
-            return userConverter.convertEntityToDTO(userEntity);
-        }
-        throw new UserNotFoundException(id);
+        UserEntity userEntity = optionalUserEntity.get();
+
+        userEntity.setFirstName(namesDTO.getFirstName());
+        userEntity.setLastName(namesDTO.getLastName());
+
+        userRepository.save(userEntity);
+        return userConverter.convertEntityToDTO(userEntity);
+
     }
 
     @Override
-    public UserDTO updateEmailAddress(UserDTO userDTO, Integer id) {
+    public UserDTO updateEmailAddress(EmailAddressDTO emailAddressDTO, Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
 
-            userEntity.getEmailAddressEntity().setEmailAddress(userDTO.getEmailAddress());
+        if (optionalUserEntity.isEmpty()) throw new UserNotFoundException(id);
 
-            userRepository.save(userEntity);
-            return userConverter.convertEntityToDTO(userEntity);
-        }
-        throw new UserNotFoundException(id);
+        UserEntity userEntity = optionalUserEntity.get();
+
+        userEntity.getEmailAddressEntity().setEmailAddress(emailAddressDTO.getEmailAddress());
+
+        userRepository.save(userEntity);
+        return userConverter.convertEntityToDTO(userEntity);
     }
 
     @Override
-    public UserDTO updatePhoneNumbers(UserDTO userDTO, Integer id) {
+    public UserDTO updateContactDetails(List<PhoneNumberDTO> contactDetails, Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
 
-            updatePhoneNumbers(userDTO, userEntity);
+        if (optionalUserEntity.isEmpty()) throw new UserNotFoundException(id);
 
-            userRepository.save(userEntity);
-            return userConverter.convertEntityToDTO(userEntity);
-        }
-        throw new UserNotFoundException(id);
+        UserEntity userEntity = optionalUserEntity.get();
+
+        updateContactDetails(contactDetails, userEntity);
+
+        userRepository.save(userEntity);
+        return userConverter.convertEntityToDTO(userEntity);
     }
 
     @Override
-    public UserDTO updateAddress(UserDTO userDTO, Integer id) {
+    public UserDTO updateAddress(AddressDTO addressDTO, Integer id) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
 
-            updateAddress(userDTO, userEntity);
+        if (optionalUserEntity.isEmpty()) throw new UserNotFoundException(id);
 
-            userRepository.save(userEntity);
-            return userConverter.convertEntityToDTO(userEntity);
-        }
-        throw new UserNotFoundException(id);
+        UserEntity userEntity = optionalUserEntity.get();
+
+        updateAddress(addressDTO, userEntity);
+
+        userRepository.save(userEntity);
+        return userConverter.convertEntityToDTO(userEntity);
     }
 }

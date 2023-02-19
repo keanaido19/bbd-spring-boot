@@ -8,6 +8,7 @@ import za.co.bbd.atc.propertymanagement.entity.AddressEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "PersonLookup")
@@ -40,7 +41,34 @@ public class UserEntity {
     )
     private AddressEntity addressEntity;
 
-    public void removePhoneNumbers() {
+    public void removePhoneNumber(PhoneNumberEntity phoneNumber) {
+        if (null != phoneNumberEntityList)
+            this.phoneNumberEntityList.remove(phoneNumber);
+        if (null != phoneNumber.getUserEntityList())
+            phoneNumber.getUserEntityList().remove(this);
+    }
+
+    public void addPhoneNumber(PhoneNumberEntity phoneNumber) {
+        if (null == phoneNumberEntityList)
+            this.setPhoneNumberEntityList(new ArrayList<>());
+
+        this.phoneNumberEntityList.add(phoneNumber);
+
+        if (null == phoneNumber.getUserEntityList())
+            phoneNumber.setUserEntityList(new ArrayList<>());
+
+        phoneNumber.getUserEntityList().add(this);
+    }
+
+    public void addPhoneNumbers(List<PhoneNumberEntity> phoneNumbers) {
+        phoneNumbers.forEach(this::addPhoneNumber);
+    }
+
+    public void removePhoneNumbers(List<PhoneNumberEntity> phoneNumbers) {
+        phoneNumbers.forEach(this::removePhoneNumber);
+    }
+
+    public void removeAllPhoneNumbers() {
         if (null != getPhoneNumberEntityList()) {
             for (PhoneNumberEntity phoneNumberEntity : getPhoneNumberEntityList()) {
                 phoneNumberEntity.getUserEntityList().remove(this);

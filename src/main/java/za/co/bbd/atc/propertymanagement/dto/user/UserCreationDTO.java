@@ -22,7 +22,7 @@ public class UserCreationDTO {
     @NotBlank
     private String emailAddress;
 
-    private List<PhoneNumberDTO> phoneNumberList;
+    private List<PhoneNumberDTO> contactDetails;
 
     private AddressDTO address;
 }

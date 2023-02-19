@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.bbd.atc.propertymanagement.dto.user.UserCreationDTO;
-import za.co.bbd.atc.propertymanagement.dto.user.UserDTO;
+import za.co.bbd.atc.propertymanagement.dto.AddressDTO;
+import za.co.bbd.atc.propertymanagement.dto.user.*;
 import za.co.bbd.atc.propertymanagement.service.impl.UserServiceImpl;
 
 import java.util.List;
@@ -41,48 +41,48 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        userDTO = userService.updateUser(userDTO, id);
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserCreationDTO userCreationDTO, @PathVariable Integer id) {
+        UserDTO userDTO = userService.updateUser(userCreationDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping(
-            value = "/update-names/{id}",
+            value = "/{id}/names",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateNames(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        userDTO = userService.updateNames(userDTO, id);
+    public ResponseEntity<UserDTO> updateNames(@Valid @RequestBody NamesDTO namesDTO, @PathVariable Integer id) {
+        UserDTO userDTO = userService.updateNames(namesDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping(
-            value = "/update-email-address/{id}",
+            value = "/{id}/email-address",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateEmailAddress(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        userDTO = userService.updateEmailAddress(userDTO, id);
+    public ResponseEntity<UserDTO> updateEmailAddress(@Valid @RequestBody EmailAddressDTO emailAddressDTO, @PathVariable Integer id) {
+        UserDTO userDTO = userService.updateEmailAddress(emailAddressDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping(
-            value = "/update-phone-numbers/{id}",
+            value = "/{id}/contact-details",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updatePhoneNumbers(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        userDTO = userService.updatePhoneNumbers(userDTO, id);
+    public ResponseEntity<UserDTO> updateContactDetails(@Valid @RequestBody List<PhoneNumberDTO> contactDetails, @PathVariable Integer id) {
+        UserDTO userDTO = userService.updateContactDetails(contactDetails, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping(
-            value = "/update-address/{id}",
+            value = "/{id}/address",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> updateAddress(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
-        userDTO = userService.updateAddress(userDTO, id);
+    public ResponseEntity<UserDTO> updateAddress(@Valid @RequestBody AddressDTO addressDTO, @PathVariable Integer id) {
+        UserDTO userDTO = userService.updateAddress(addressDTO, id);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 }
