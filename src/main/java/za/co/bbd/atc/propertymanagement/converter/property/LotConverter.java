@@ -14,15 +14,16 @@ import java.util.List;
 public class LotConverter {
     private final AddressConverter addressConverter;
     public LotDTO convertEntityToDTO(LotEntity lotEntity) {
-        LotDTO dto = new LotDTO();
-        dto.setLotID(lotEntity.getId());
-        dto.setLotNumber(lotEntity.getNumber());
-
-        PropertyEntity propertyEntity = lotEntity.getPropertyEntity();
-        dto.setAddress(addressConverter.convertEntityToDTO(propertyEntity.getAddressEntity()));
-        dto.setPropertyID(propertyEntity.getId());
-
-        return dto;
+//        LotDTO dto = new LotDTO();
+//        dto.setLotID(lotEntity.getId());
+//        dto.setLotNumber(lotEntity.getNumber());
+//
+//        PropertyEntity propertyEntity = lotEntity.getPropertyEntity();
+//        dto.setAddress(addressConverter.convertEntityToDTO(propertyEntity.getAddressEntity()));
+//        dto.setPropertyID(propertyEntity.getId());
+//
+//        return dto;
+        return null;
     }
 
     public List<LotDTO> convertEntityListToDTOlist(List<LotEntity> lotEntityList) {

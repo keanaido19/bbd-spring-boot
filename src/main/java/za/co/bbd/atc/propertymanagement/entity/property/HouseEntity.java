@@ -19,8 +19,8 @@ public class HouseEntity {
     @JoinColumn(name = "PropertyID", unique = true, nullable = false)
     private PropertyEntity propertyEntity;
 
-    @JsonIgnore
-    public PropertyEntity getPropertyEntity() {
-        return propertyEntity;
-    }
+//    @JsonIgnore
+//    public PropertyEntity getPropertyEntity() {
+//        return propertyEntity;
+//    }
 }

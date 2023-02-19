@@ -18,9 +18,9 @@ public class LotEntity {
     @Column(name = "Number", unique = true, nullable = false)
     private String Number;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PropertyID", unique = true, nullable = false)
-    private PropertyEntity propertyEntity;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "PropertyID", unique = true, nullable = false)
+//    private PropertyEntity propertyEntity;
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinTable(
@@ -43,8 +43,8 @@ public class LotEntity {
         return apartmentEntity;
     }
 
-    @JsonIgnore
-    public PropertyEntity getPropertyEntity() {
-        return propertyEntity;
-    }
+//    @JsonIgnore
+//    public PropertyEntity getPropertyEntity() {
+//        return propertyEntity;
+//    }
 }

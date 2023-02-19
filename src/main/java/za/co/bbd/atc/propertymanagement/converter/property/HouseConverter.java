@@ -7,6 +7,8 @@ import za.co.bbd.atc.propertymanagement.dto.property.HouseDTO;
 import za.co.bbd.atc.propertymanagement.entity.property.HouseEntity;
 import za.co.bbd.atc.propertymanagement.entity.property.PropertyEntity;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class HouseConverter {
@@ -23,4 +25,22 @@ public class HouseConverter {
 
         return dto;
     }
+
+    public HouseDTO convertEntityToDTO(HouseEntity houseEntity) {
+        HouseDTO dto = new HouseDTO();
+        dto.setPropertyType("HOUSE");
+        dto.setHouseID(houseEntity.getId());
+
+
+        PropertyEntity propertyEntity = houseEntity.getPropertyEntity();
+        dto.setAddress(addressConverter.convertEntityToDTO(propertyEntity.getAddressEntity()));
+        dto.setPropertyID(propertyEntity.getId());
+
+        return dto;
+    }
+
+    public List<HouseDTO> convertEntityListToDTOlist(List<HouseEntity> houseEntities) {
+        return houseEntities.stream().map(this::convertEntityToDTO).toList();
+    }
+
 }

@@ -27,11 +27,16 @@ public class PropertyEntity {
     private ApartmentEntity apartmentEntity;
 
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "propertyEntity")
-    private LotEntity lotEntity;
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "propertyEntity")
+//    private LotEntity lotEntity;
 
     @JsonIgnore
     public AddressEntity getAddressEntity() {
         return addressEntity;
     }
+
+//    @JsonIgnore
+//    public LotEntity getLotEntity() {
+//        return lotEntity;
+//    }
 }
